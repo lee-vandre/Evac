@@ -17,6 +17,7 @@ public class GamePanel extends JPanel {
     private MouseInputs mouseInputs;
     private float xDelta= 100,yDelta=100;
     private BufferedImage img;
+    private BufferedImage[] idleAnimation;
 
 
 
@@ -24,14 +25,24 @@ public class GamePanel extends JPanel {
 
         mouseInputs = new MouseInputs(this);
         importImage();
+        loadAnimations();
         setPanelSize();
         addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
     }
 
+    private void loadAnimations() {
+        idleAnimation = new BufferedImage[5];
+
+//        for (int i = 0; i < idleAnimation.length; i++){
+//
+//
+//        }
+    }
+
     private void importImage() {
-        InputStream is = getClass().getResourceAsStream("/Armature_idle_01.png");
+        InputStream is = getClass().getResourceAsStream("/idle/Armature_idle_01.png");
         try {
 
             if (is == null) {
@@ -62,8 +73,7 @@ public class GamePanel extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
-        g.drawImage(img.getSubimage(0,0,64,64),0,0,120,120,null);
+        g.drawImage(img,(int)xDelta,(int)yDelta,120,120,null);
 
     }
 
