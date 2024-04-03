@@ -17,7 +17,8 @@ public class GamePanel extends JPanel {
     private MouseInputs mouseInputs;
     private float xDelta= 100,yDelta=100;
     private BufferedImage img;
-    private BufferedImage[] idleAnimation;
+    private Animations animations;
+    private int animationTick,animationIndex,animationSpeed = 15;
 
 
 
@@ -32,17 +33,23 @@ public class GamePanel extends JPanel {
         addMouseMotionListener(mouseInputs);
     }
 
-    private void loadAnimations() {
-        idleAnimation = new BufferedImage[5];
 
-//        for (int i = 0; i < idleAnimation.length; i++){
+//    private void loadAnimations() {
+//        animations = new BufferedImage[6];
 //
-//
+//        for (int i = 0; i< animations.length; i++){
+//            animations[i] = img.getSubimage(i*48,0,48,48);
 //        }
+//    }
+
+    private void loadAnimations() {
+
+        animations = new Animations();
+        BufferedImage[] playerAnimations = animations.playerAnimationsArray();
     }
 
     private void importImage() {
-        InputStream is = getClass().getResourceAsStream("/idle/Armature_idle_01.png");
+        InputStream is = getClass().getResourceAsStream("/run/PlayerRun.png");
         try {
 
             if (is == null) {
@@ -69,13 +76,26 @@ public class GamePanel extends JPanel {
         this.yDelta += value;
 
     }
+    private void updateAnimationTick() {
+        animationTick++;
+        if(animationTick >= animationSpeed) {
+            animationTick = 0;
+            animationIndex++;
+            if (animationIndex >= animations.length) {
+                animationIndex = 0;
+            }
+        }
+    }
 
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawImage(img,(int)xDelta,(int)yDelta,120,120,null);
+
+        updateAnimationTick();
+        g.drawImage(animations[animationIndex],(int)xDelta,(int)yDelta,80,80,null);
 
     }
+
 
 }
 
